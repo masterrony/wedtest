@@ -1,0 +1,227 @@
+@extends('panel.layout')
+
+@section('title', 'My panel')
+
+@section('style')
+    @parent
+
+    <link rel="stylesheet" href="/assets/panel/js/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" id="css-theme" href="/assets/panel/css/themes/xdream.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/manual/css/style.css">
+@endsection
+
+@section('page-header')
+
+    <!-- Header Content -->
+    <div class="content-header">
+        <!-- Left Section -->
+        <div class="d-flex align-items-center">
+
+            <div class="content-header bg-white-10">
+                <!-- Logo -->
+                <a class="link-fx font-w600 font-size-lg text-white" href="/panel">
+                    <span class="smini-visible">
+                        <span class="text-white-75">D</span><span class="text-white">x</span>
+                    </span>
+                    <span class="smini-hidden">
+                        <span class="text-white">{{$user['role'] === 'admin' ? 'Admin' : 'My'}}</span><span class="text-white-75">Panel</span>
+                    </span>
+                </a>
+                <!-- END Options -->
+            </div>
+            
+        </div>
+        <!-- END Left Section -->
+
+        <!-- Right Section -->
+        <div>
+            <!-- User Dropdown -->
+            <div class="dropdown d-inline-block">
+                <a type="button" class="btn btn-dual" href="/logout">
+                    <i class="fa fa-fw fa-sign-out-alt ml-1"></i> Logout
+                </a>
+            </div>
+            <!-- END User Dropdown -->
+        </div>
+        <!-- END Right Section -->
+    </div>
+    <!-- END Header Content -->
+
+    <!-- Header Loader -->
+    <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+    <div id="page-header-loader" class="overlay-header bg-primary-darker">
+        <div class="content-header">
+            <div class="w-100 text-center">
+                <i class="fa fa-fw fa-2x fa-sun fa-spin text-white"></i>
+            </div>
+        </div>
+    </div>
+    <!-- END Header Loader -->
+
+@endsection
+
+@section('action')
+    <div class="mt-5 smini-hide">
+        <div class="btn-group" role="group">
+            <button class="btn btn-hero-success" id="btn_new_folder">
+                <i class="fa fa-plus mr-1"></i> New Folder
+            </button>
+            <button class="btn btn-hero-info" id="btn_move_up">
+                <i class="fa fa-arrow-up mr-1"></i> Move Up
+            </button>
+            @if($user['role'] === 'admin')
+                <button class="btn btn-hero-primary" id="btn_new_file">
+                    <span><i class="fa fa-plus mr-1"></i> New File</span>
+                    <input type="file" id="inpt_new_file">
+                </button>
+                <button class="btn btn-primary" id="btn_upload_file" disabled>
+                    <i class="fa fa-file-upload mr-1"></i>
+                </button>
+            @endif
+        </div>
+    </div>
+@endsection
+
+@section('content')
+
+    <!-- Page Content -->
+    <div class="row no-gutters flex-md-12-auto">
+        <div class="col-md-12 col-lg-12 col-xl-12 order-md-0 bg-body-dark">
+            <div class="content">
+
+                <!-- Folders -->
+                <h2 id="folder-heading" class="content-heading border-black-op">
+                    <i class="far fa-fw fa-folder mr-1"></i> Folders ({{count($folders)}})
+                </h2>
+                <div class="row items-push" id="div_folder_container">
+                    @foreach( $folders as $folder)
+                        <div class="col-sm-6 col-md-4 col-xl-3 d-flex align-items-center top-container">
+                            <!-- Inspiration Folder -->
+                            <div class="options-container fx-overlay-zoom-in w-100">
+                                <!-- Inspiration Folder Block -->
+                                <div class="options-item block block-rounded block-transparent mb-0 content-container">
+                                    <div class="block-content text-center">
+                                        <p class="mb-2">
+                                            <i class="fa fa-folder fa-4x text-info"></i>
+                                        </p>
+                                        <p class="font-w600 font-size-lg mb-0">
+                                            {{$folder['name']}}
+                                        </p>
+                                        <p class="font-size-sm text-muted">
+                                            ({{$folder['file_count']}})
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- END Inspiration Folder Block -->
+
+                                <!-- Inspiration Folder Hover Options -->
+                                <div class="options-overlay rounded-lg bg-white-50">
+                                    <div class="options-overlay-content" data-path = "{{$folder['fullpath']}}">
+                                        <div class="mt-3 mb-3">
+                                            <button class="btn btn-hero-light btn-open">
+                                                <i class="fa fa-share text-primary mr-1"></i> Open
+                                            </button>
+                                        </div>
+                                        <div class="btn-group mb-3">
+                                            <button class="btn btn-sm btn-light btn-cut">
+                                                <i class="fa fa-cut text-primary mr-1"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-light btn-paste">
+                                                <i class="fa fa-paste mr-1"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-light btn-delete-folder" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this folder?">
+                                                <i class="fa fa-trash text-danger mr-1"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" value = "{{$folder['name']}}" data-type="folder" class="form-control inpt-rename" placeholder="type name...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Inspiration Folder Hover Options -->
+                            </div>
+                            <!-- END Inspiration Folder -->
+                        </div>
+                    @endforeach
+                </div>
+                <!-- END Folders -->
+
+                <!-- Files -->
+                <h2 id="file-heading" class="content-heading border-black-op">
+                    <i class="far fa-fw fa-file mr-1"></i> Files ({{count($files)}})
+                </h2>
+                <div class="row items-push js-gallery" id="div_file_container">
+                    @foreach($files as $file)
+                        <div class="col-sm-6 col-md-4 col-xl-3 d-flex align-items-center top-container">
+                            <!-- Example File -->
+                            <div class="options-container w-100">
+                                <!-- Example File Block -->
+                                <div class="options-item block block-rounded block-transparent mb-0 content-container">
+                                    <div class="block-content text-center">
+                                        <p class="mb-2 overflow-hidden">
+                                            <img class="img-fluid" src="@php echo asset('/storage/' . $file['fullpath']) @endphp" alt="">
+                                        </p>
+                                        <p class="font-w600 mb-0">
+                                            {{$file['name']}}
+                                        </p>
+                                        <p class="font-size-sm text-muted">
+                                            {{$file['size']}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- END Example File Block -->
+
+                                <!-- Example File Hover Options -->
+                                <div class="options-overlay rounded-lg bg-white-50">
+                                    <div class="options-overlay-content" data-path = "{{$file['fullpath']}}">
+                                        <div class="mb-3">
+                                            <a class="btn btn-hero-light img-lightbox" href="@php echo asset('/storage/' . $file['fullpath']) @endphp">
+                                                <i class="fa fa-eye text-primary mr-1"></i> View
+                                            </a>
+                                        </div>
+                                        <div class="btn-group mb-3">
+                                            <button class="btn btn-sm btn-light btn-cut">
+                                                <i class="fa fa-cut text-primary mr-1"></i>
+                                            </button>
+                                            <a class="btn btn-sm btn-light" href="/file/download?path={{$file['fullpath']}}">
+                                                <i class="fa fa-download text-black mr-1"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-light btn-delete-file" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this photo ?">
+                                                <i class="fa fa-trash text-danger mr-1"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" value = "{{$file['name']}}" class="form-control inpt-rename" placeholder="type name...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Example File Hover Options -->
+                            </div>
+                            <!-- END Example File -->
+                        </div>
+                    @endforeach
+                </div>
+                <!-- END Files -->
+            </div>
+        </div>
+    </div>
+    <!-- END Page Content -->
+
+@endsection
+
+@section('script')
+    @parent
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // set initial current path
+            var currentPath = `{{$user['role'] === 'admin' ? 'admin' : 'customers' . $user['folder']}}`
+            localStorage.setItem('currentPath', currentPath)
+        })
+    </script>
+    <script src = "/assets/manual/js/file_manage.js"></script>
+@endsection
