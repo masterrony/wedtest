@@ -25,7 +25,7 @@
             <main id="main-container">
 
                 <!-- Page Content -->
-                <div class="bg-image" style="background-image: url('assets/media/photos/photo9@2x.jpg');">
+                <div class="bg-image" style="background-image: url('/assets/panel/media/photos/photo9@2x.jpg');">
                     <div class="row no-gutters justify-content-center bg-black-75">
                         <div class="hero-static col-sm-8 col-md-6 col-xl-4 d-flex align-items-center p-2 px-sm-0">
                             <!-- Lock Block -->
@@ -48,7 +48,7 @@
                                     <!-- END Header -->
 
                                     <!-- Lock Form -->
-                                    <form class="js-validation-lock" action="{{route('login')}}" method="POST">
+                                    <form class="js-validation-lock" action="{{route('auth.sign_in')}}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <div class="input-group">

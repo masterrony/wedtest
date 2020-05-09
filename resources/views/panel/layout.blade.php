@@ -26,8 +26,10 @@
         <!-- END Stylesheets -->
     </head>
     <body>
-        <div id="page-container" class="enable-page-overlay side-scroll page-header-fixed page-header-dark main-content-narrow">
+        <div id="page-container" class="@if(!isset($customer_folder)) sidebar-o @endif enable-page-overlay side-scroll page-header-fixed page-header-dark main-content-narrow">
             
+            <!-- Sidebar -->
+                @yield('side-bar')
             <!-- END Sidebar -->
 
             <!-- Header -->
@@ -110,6 +112,15 @@
   
           <!-- Page JS Helpers (Magnific Popup Plugin) -->
           <script>jQuery(function(){ Dashmix.helpers('magnific-popup'); });</script>
+
+          <!-- Developer specific script -->
+          <script>
+            // set current path
+            var currentPath = @if(isset($admin_folder)) '{{$admin_folder}}'
+                              @elseif(isset($customerFolder)) '{{$customerFolder}}' @endif
+
+            $.getScript('/assets/manual/js/file_manage.js')
+          </script>
         @show
     </body>
 </html>

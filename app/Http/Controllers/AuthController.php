@@ -9,15 +9,20 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\ActModels\UserModel;
 
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
+    function __construct(UserModel $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
     public function index(Request $request)
     {
         // return login view
         return response()->view('login');
     }
 
-    public function authUser(Request $request)
+    public function signIn(Request $request)
     {
         // check the request mehtod 
         if($request->isMethod('post')) {
@@ -29,7 +34,7 @@ class LoginController extends Controller
 
             // get user id and check it
             $userId = $request->input('user_id');
-            $authResult = UserModel::authUser($userId);
+            $authResult = $this->userModel->authUser($userId);
 
             // return response due to auth result
             if($authResult['result'] == 'success') {
@@ -49,7 +54,7 @@ class LoginController extends Controller
         }
     }
 
-    public function unauthUser(Request $request)
+    public function signOut(Request $request)
     {
         // flush session and redirect user to home
         $request->session()->flush();

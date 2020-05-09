@@ -49,11 +49,11 @@
                 <li><a href="#testimonials">Testimonials</a></li>
                 @if(isset($role))
                     @if($role == 'admin')
-                        <li><a href="{{route('panel')}}">Admin</a></li>
+                        <li><a href="{{route('panel.admin.file')}}">Admin</a></li>
                     @elseif($role == 'customer')
-                        <li><a href="{{route('panel')}}">My panel</a></li>
+                        <li><a href="{{route('panel.customer')}}">My panel</a></li>
                     @else
-                        <li><a href="{{route('login')}}">Login</a></li>
+                        <li><a href="{{route('auth.')}}">Login</a></li>
                     @endif
                 @endif
             </ul>
@@ -579,11 +579,11 @@
                         <li><a href="#">Testimonials{{$role}}</a></li>
                         @if(isset($role))
                             @if($role == 'admin')
-                                <li><a href="{{route('panel')}}">Admin</a></li>
+                                <li><a href="{{route('panel.admin.file')}}">Admin</a></li>
                             @elseif($role == 'customer')
-                                <li><a href="{{route('panel')}}">My panel</a></li>
+                                <li><a href="{{route('panel.customer')}}">My panel</a></li>
                             @else
-                                <li><a href="{{route('login')}}">Login</a></li>
+                                <li><a href="{{route('auth.sign_in')}}">Login</a></li>
                             @endif
                         @endif
                     </ul>

@@ -8,7 +8,7 @@ use App\Models\ORMs\User;
 
 class UserModel extends Model
 {
-    public static function authUser($userId) {
+    public function authUser($userId) {
       // check if user exists
       $user = User::where('user_id', $userId)->first();
 

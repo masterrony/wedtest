@@ -19,7 +19,7 @@ class FileManageController extends Controller
         Storage::makeDirectory($parent . '/New Folder' . rand(10, 100));
 
         // get infos of folder, file of current directory
-        $data = $this->getFolderFileInfo($parent);
+        $data = $this->getFolderInfo($parent);
 
         return response()->json($data, 200);
     }
@@ -30,7 +30,7 @@ class FileManageController extends Controller
         $path = $request->query('path');
 
         // get infos of folder, file of targeted path
-        $data = $this->getFolderFileInfo($path);
+        $data = $this->getFolderInfo($path);
 
         return response()->json($data, 200);
     }
@@ -52,7 +52,7 @@ class FileManageController extends Controller
             return response()->json(['result' => false, 'message' => $validate['message']]);
 
         $file->store($path);
-        $data = $this->getFolderFileInfo($path);
+        $data = $this->getFolderInfo($path);
 
         return response()->json(['result' => true, 'data' => $data], 200);
     }
@@ -68,13 +68,13 @@ class FileManageController extends Controller
             $exists = Storage::disk('local')->exists($path);
             if(!$exists)
                 return response()->json([
-                    'result' => false,
+                    'result' => false, 
                     'message' => 'File does not exist !'
                 ]);
 
             // if exists then delete file
             Storage::delete($path);
-            $data = $this->getFolderFileInfo($currentPath);
+            $data = $this->getFolderInfo($currentPath);
 
             return response()->json([
                 'result' => true,
@@ -92,7 +92,7 @@ class FileManageController extends Controller
             
             // if exists then delete folder
             Storage::deleteDirectory($path);
-            $data = $this->getFolderFileInfo($currentPath);
+            $data = $this->getFolderInfo($currentPath);
 
             return response()->json([
                 'result' => true,
@@ -127,9 +127,9 @@ class FileManageController extends Controller
             return response()->json([
                 'result' => false,
                 'message' => 'That name already exists. Please try another.'
-            ]);       
+            ]);
 
-        Storage::move($original, $newName);
+        Storage::move($original, $newName, true);
 
         return response()->json(['result' => true, 'message' => 'Modified successfully !'], 200);
     }
@@ -153,10 +153,14 @@ class FileManageController extends Controller
         // make complete dest
         $dest = $dest . '/' . basename($source);
         
-        // if all good let move
+        // let check if same file exists
+        $exists = Storage::disk('local')->exists($dest);
+        if(!!$exists)
+            return response()->json(['result' => false, 'message' => 'That file already exists']);
+
         Storage::move($source, $dest, true);
 
-        $data = $this->getFolderFileInfo($currentPath);
+        $data = $this->getFolderInfo($currentPath);
 
         return response()->json(['result' => true, 'data' => $data ], 200);
     }
@@ -166,7 +170,7 @@ class FileManageController extends Controller
         return Storage::download($request->query('path'));
     }
 
-    public function getFolderFileInfo($path)
+    public function getFolderInfo($path)
     {
         // get folders and files of this folder
         $folders = Storage::directories($path);

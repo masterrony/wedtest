@@ -1,6 +1,6 @@
 @extends('panel.layout')
 
-@section('title', 'My panel')
+@section('title', 'Admin')
 
 @section('style')
     @parent
@@ -8,6 +8,67 @@
     <link rel="stylesheet" href="/assets/panel/js/plugins/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" id="css-theme" href="/assets/panel/css/themes/xdream.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/manual/css/style.css">
+@endsection
+
+@section('side-bar')
+    <!-- Sidebar -->
+    <nav id="sidebar" aria-label="Main Navigation">
+        <!-- Side Header -->
+        <div class="bg-header-dark">
+            <div class="content-header bg-white-10">
+                <!-- Logo -->
+                <a class="link-fx font-w600 font-size-lg text-white" href="{{route('panel.admin.file')}}">
+                    <span class="smini-visible">
+                        <span class="text-white-75">Ad</span><span class="text-white">min</span>
+                    </span>
+                    <span class="smini-hidden">
+                        <span class="text-white">Admin </span><span class="text-white-75">Panel</span> <span class="text-white font-size-base font-w400"></span>
+                    </span>
+                </a>
+                <!-- END Logo -->
+
+                <!-- Options -->
+                <div>
+                    <!-- Toggle Sidebar Style -->
+                    <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                    <!-- Class Toggle, functionality initialized in Helpers.coreToggleClass() -->
+                    <a class="js-class-toggle text-white-75" data-target="#sidebar-style-toggler" data-class="fa-toggle-off fa-toggle-on" data-toggle="layout" data-action="sidebar_style_toggle" href="javascript:void(0)">
+                        <i class="fa fa-toggle-off" id="sidebar-style-toggler"></i>
+                    </a>
+                    <!-- END Toggle Sidebar Style -->
+
+                    <!-- Close Sidebar, Visible only on mobile screens -->
+                    <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                    <a class="d-lg-none text-white ml-2" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                    <!-- END Close Sidebar -->
+                </div>
+                <!-- END Options -->
+            </div>
+        </div>
+        <!-- END Side Header -->
+
+        <!-- Side Navigation -->
+        <div class="content-side content-side-full">
+            <ul class="nav-main">
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('panel.admin.permission')}}">
+                        <i class="nav-main-link-icon si si-cursor"></i>
+                        <span class="nav-main-link-name">Permission</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('panel.admin.file')}}">
+                        <i class="nav-main-link-icon far fa-file-alt"></i>
+                        <span class="nav-main-link-name">File</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- END Side Navigation -->
+    </nav>
+            <!-- END Sidebar -->
 @endsection
 
 @section('page-header')
@@ -19,12 +80,12 @@
 
             <div class="content-header bg-white-10">
                 <!-- Logo -->
-                <a class="link-fx font-w600 font-size-lg text-white" href="/panel">
+                <a class="link-fx font-w600 font-size-lg text-white" href="{{route('panel.admin.file')}}">
                     <span class="smini-visible">
-                        <span class="text-white-75">D</span><span class="text-white">x</span>
+                        <span class="text-white-75">Fi</span><span class="text-white">le</span>
                     </span>
                     <span class="smini-hidden">
-                        <span class="text-white">{{$user['role'] === 'admin' ? 'Admin' : 'My'}}</span><span class="text-white-75">Panel</span>
+                        <span class="text-white">File</span><span class="text-white-75"></span>
                     </span>
                 </a>
                 <!-- END Options -->
@@ -37,7 +98,7 @@
         <div>
             <!-- User Dropdown -->
             <div class="dropdown d-inline-block">
-                <a type="button" class="btn btn-dual" href="/logout">
+                <a type="button" class="btn btn-dual" href="{{route('auth.sign_out')}}">
                     <i class="fa fa-fw fa-sign-out-alt ml-1"></i> Logout
                 </a>
             </div>
@@ -69,15 +130,13 @@
             <button class="btn btn-hero-info" id="btn_move_up">
                 <i class="fa fa-arrow-up mr-1"></i> Move Up
             </button>
-            @if($user['role'] === 'admin')
-                <button class="btn btn-hero-primary" id="btn_new_file">
-                    <span><i class="fa fa-plus mr-1"></i> New File</span>
-                    <input type="file" id="inpt_new_file">
-                </button>
-                <button class="btn btn-primary" id="btn_upload_file" disabled>
-                    <i class="fa fa-file-upload mr-1"></i>
-                </button>
-            @endif
+            <button class="btn btn-hero-primary" id="btn_new_file">
+                <span><i class="fa fa-plus mr-1"></i> New File</span>
+                <input type="file" id="inpt_new_file">
+            </button>
+            <button class="btn btn-primary" id="btn_upload_file" disabled>
+                <i class="fa fa-file-upload mr-1"></i>
+            </button>
         </div>
     </div>
 @endsection
@@ -211,17 +270,4 @@
     </div>
     <!-- END Page Content -->
 
-@endsection
-
-@section('script')
-    @parent
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // set initial current path
-            var currentPath = `{{$user['role'] === 'admin' ? 'admin' : 'customers' . $user['folder']}}`
-            localStorage.setItem('currentPath', currentPath)
-        })
-    </script>
-    <script src = "/assets/manual/js/file_manage.js"></script>
 @endsection

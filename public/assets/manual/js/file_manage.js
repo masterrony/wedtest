@@ -4,7 +4,6 @@
 $(document).ready(function() {
 
     var cutCand = null // varriable for store file path will be moved
-    var currentPath = localStorage.getItem('currentPath') // get current path
 
     // set ajax request header with csrf token
     $.ajaxSetup({
@@ -140,7 +139,7 @@ $(document).ready(function() {
     // handler for delete file
     $(document).on('click', 'button.btn-delete-file', function() {    
         var topContainer = $(this).parents("div.top-container")
-        
+        console.log(currentPath)
         $.ajax({
             type: 'DELETE',
             url: '/file/delete',

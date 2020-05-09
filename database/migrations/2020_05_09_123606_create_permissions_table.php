@@ -15,7 +15,7 @@ class CreatePermissionsTable extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->string('role_id');
+            $table->string('role');
             $table->boolean('create_folder');
             $table->boolean('rename');
             $table->boolean('delete');
