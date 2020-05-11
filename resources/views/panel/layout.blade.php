@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-        <title>@yield('title') | test IO</title>
+        <title>@yield('title') | test IO</title> 
 
         <meta name="description" content="test IO panel">
         <meta name="author" content="pixelcave">
@@ -49,7 +49,31 @@
                                 <div class="col-md-6 d-md-flex align-items-md-center">
                                     <div class="py-4 py-md-0 text-center text-md-left invisible" data-toggle="appear">
                                         <h1 class="font-size-h2 mb-2">Dashboard</h1>
-                                        @yield('action')
+                                        <div class="mt-5 smini-hide">
+                                            @if(isset($admin_folder) || isset($customer_folder))
+                                                <div class="btn-group" role="group">
+                                                    @if(!!$permissions['create_folder'])
+                                                        <button class="btn btn-hero-success" id="btn_new_folder">
+                                                            <i class="fa fa-plus mr-1"></i> New Folder
+                                                        </button>
+                                                    @endif
+                                                    @if(isset($admin_folder))
+                                                        <button class="btn btn-hero-primary" id="btn_new_file">
+                                                            <span><i class="fa fa-plus mr-1"></i> New File</span>
+                                                            <input type="file" id="inpt_new_file">
+                                                        </button>
+                                                        <button class="btn btn-primary" id="btn_upload_file" disabled>
+                                                            <i class="fa fa-file-upload mr-1"></i>
+                                                        </button>
+                                                    @endif
+                                                    <button class="btn btn-hero-info" id="btn_move_up">
+                                                        <i class="fa fa-arrow-up mr-1"></i> Up One Folder
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <p>Set permission for each role. </p>
+                                            @endif   
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -72,10 +96,10 @@
                 <div class="content py-0">
                     <div class="row font-size-sm">
                         <div class="col-sm-6 order-sm-2 mb-1 mb-sm-0 text-center text-sm-right">
-                            Crafted with <i class="fa fa-heart text-danger"></i> by <a class="font-w600" href="https://1.envato.market/ydb" target="_blank">pixelcave</a>
+                            Crafted with <i class="fa fa-heart text-danger"></i> by <a class="font-w600" href="#" target="_blank">pixelcave</a>
                         </div>
                         <div class="col-sm-6 order-sm-1 text-center text-sm-left">
-                            <a class="font-w600" href="https://1.envato.market/r6y" target="_blank">Dashmix 2.2</a> &copy; <span data-toggle="year-copy"></span>
+                            <a class="font-w600" href="#" target="_blank">Dashmix 2.2</a> &copy; <span data-toggle="year-copy"></span>
                         </div>
                     </div>
                 </div>
@@ -116,8 +140,8 @@
           <!-- Developer specific script -->
           <script>
             // set current path
-            var currentPath = @if(isset($admin_folder)) '{{$admin_folder}}'
-                              @elseif(isset($customerFolder)) '{{$customerFolder}}' @endif
+            var rootPath = @if(isset($admin_folder)) '{{$admin_folder}}'
+                              @elseif(isset($customer_folder)) '{{$customer_folder}}' @endif
 
             $.getScript('/assets/manual/js/file_manage.js')
           </script>

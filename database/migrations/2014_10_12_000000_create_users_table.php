@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('user_id')->unique();
-            $table->string('role')->default('customer');
+            $table->unsignedBigInterger('role_id')->default(2);
             $table->string('folder');
             $table->timestamps();
         });

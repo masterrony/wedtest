@@ -26,6 +26,7 @@ class CustomerController extends Controller
         // return view with file, folder data
         return view('panel.customer', [
             'customer_folder' => $customerFolder,
+            'permissions' => $data['permissions'],
             'folders' => $data['folders'],
             'files' => $data['files']
         ]);

@@ -49,7 +49,7 @@
                 <li><a href="#testimonials">Testimonials</a></li>
                 @if(isset($role))
                     @if($role == 'admin')
-                        <li><a href="{{route('panel.admin.file')}}">Admin</a></li>
+                        <li><a href="{{route('panel.admin.file')}}">Admin Panel</a></li>
                     @elseif($role == 'customer')
                         <li><a href="{{route('panel.customer')}}">My panel</a></li>
                     @else

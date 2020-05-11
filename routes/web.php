@@ -32,7 +32,7 @@ Route::group([
 
     Route::post('/signin', 'AuthController@signIn')->name('sign_in');
    
-    Route::get('/singout', 'AuthController@signOut')->name('sign_out');
+    Route::get('/signout', 'AuthController@signOut')->name('sign_out');
 });
 
 // ================================================================================================================

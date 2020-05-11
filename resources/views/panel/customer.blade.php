@@ -60,19 +60,6 @@
 
 @endsection
 
-@section('action')
-    <div class="mt-5 smini-hide">
-        <div class="btn-group" role="group">
-            <button class="btn btn-hero-success" id="btn_new_folder">
-                <i class="fa fa-plus mr-1"></i> New Folder
-            </button>
-            <button class="btn btn-hero-info" id="btn_move_up">
-                <i class="fa fa-arrow-up mr-1"></i> Move Up
-            </button>
-        </div>
-    </div>
-@endsection
-
 @section('content')
 
     <!-- Page Content -->
@@ -114,21 +101,27 @@
                                             </button>
                                         </div>
                                         <div class="btn-group mb-3">
-                                            <button class="btn btn-sm btn-light btn-cut">
-                                                <i class="fa fa-cut text-primary mr-1"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-light btn-paste">
-                                                <i class="fa fa-paste mr-1"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-light btn-delete-folder" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this folder?">
-                                                <i class="fa fa-trash text-danger mr-1"></i>
-                                            </button>
+                                            @if(!!$permissions['move'])
+                                                <button class="btn btn-sm btn-light btn-cut">
+                                                    <i class="fa fa-cut text-primary mr-1"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-light btn-paste">
+                                                    <i class="fa fa-paste mr-1"></i>
+                                                </button>
+                                            @endif
+                                            @if(!!$permissions['delete'])
+                                                <button class="btn btn-sm btn-light btn-delete-folder" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this folder?">
+                                                    <i class="fa fa-trash text-danger mr-1"></i>
+                                                </button>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <input type="text" value = "{{$folder['name']}}" data-type="folder" class="form-control inpt-rename" placeholder="type name...">
+                                        @if(!!$permissions['rename'])
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" value = "{{$folder['name']}}" data-type="folder" class="form-control inpt-rename" placeholder="type name...">
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- END Inspiration Folder Hover Options -->
@@ -173,21 +166,27 @@
                                             </a>
                                         </div>
                                         <div class="btn-group mb-3">
-                                            <button class="btn btn-sm btn-light btn-cut">
-                                                <i class="fa fa-cut text-primary mr-1"></i>
-                                            </button>
+                                            @if(!!$permissions['move'])
+                                                <button class="btn btn-sm btn-light btn-cut">
+                                                    <i class="fa fa-cut text-primary mr-1"></i>
+                                                </button>
+                                            @endif
                                             <a class="btn btn-sm btn-light" href="/file/download?path={{$file['fullpath']}}">
                                                 <i class="fa fa-download text-black mr-1"></i>
                                             </a>
-                                            <button class="btn btn-sm btn-light btn-delete-file" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this photo ?">
-                                                <i class="fa fa-trash text-danger mr-1"></i>
-                                            </button>
+                                            @if(!!$permissions['delete'])
+                                                <button class="btn btn-sm btn-light btn-delete-file" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this photo ?">
+                                                    <i class="fa fa-trash text-danger mr-1"></i>
+                                                </button>
+                                            @endif
                                         </div>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <input type="text" value = "{{$file['name']}}" class="form-control inpt-rename" placeholder="type name...">
+                                        @if(!!$permissions['rename'])
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" value = "{{$file['name']}}" class="form-control inpt-rename" placeholder="type name...">
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- END Example File Hover Options -->

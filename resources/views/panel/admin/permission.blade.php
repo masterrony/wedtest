@@ -144,7 +144,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center" style="width: 50px;">#</th>
-                                        <th>Role</th>
+                                        <th class="text-center" style="width: 25%">Role</th>
                                         <th class="text-center" style="width: 20%">Create Folder</th>
                                         <th class="text-center" style="width: 20%">Rename</th>
                                         <th class="text-center" style="width: 20%">Delete</th>
@@ -154,28 +154,32 @@
                                 <tbody>
                                     @foreach($permissions as $permission)
                                         <tr>
-                                            <th class="text-center" scope="row">1</th>
-                                            <td class="font-w600">
-                                                {{$permission}}
+                                            <th class="text-center" scope="row">{{$loop->index + 1}}</th>
+                                            <td class="text-center font-w600">
+                                                {{$permission->role}}
                                             </td>
-                                            <td class="d-none d-sm-table-cell">
-                                                <div class="custom-control custom-switch mb-1">
-                                                    <input type="checkbox" class="custom-control-input" id="example-sw-custom1" name="example-sw-custom1" checked>
+                                            <td class="text-center d-none d-sm-table-cell">
+                                                <div class="custom-control custom-control-lg custom-switch mb-1">
+                                                    <input type="checkbox" class="custom-control-input" id="{{$permission->id}}create_folder" @if(!!$permission->create_folder) checked @endif>
+                                                    <label data-id="{{$permission->id}}" data-permission="create_folder" class="custom-control-label" for="{{$permission->id}}create_folder"></label>
                                                 </div>
                                             </td>
-                                            <td class="d-none d-sm-table-cell">
-                                                <div class="custom-control custom-switch mb-1">
-                                                    <input type="checkbox" class="custom-control-input" id="example-sw-custom1" name="example-sw-custom1" checked>
+                                            <td class="text-center d-none d-sm-table-cell">
+                                                <div class="custom-control custom-control-lg custom-switch mb-1">
+                                                    <input type="checkbox" class="custom-control-input" id="{{$permission->id}}rename" @if(!!$permission->rename) checked @endif>
+                                                    <label data-id="{{$permission->id}}" data-permission="rename" class="custom-control-label" for="{{$permission->id}}rename"></label>
                                                 </div>
                                             </td>
-                                            <td class="d-none d-sm-table-cell">
-                                                <div class="custom-control custom-switch mb-1">
-                                                    <input type="checkbox" class="custom-control-input" id="example-sw-custom1" name="example-sw-custom1" checked>
+                                            <td class="text-center d-none d-sm-table-cell">
+                                                <div class="custom-control custom-control-lg custom-switch mb-1">
+                                                    <input type="checkbox" class="custom-control-input" id="{{$permission->id}}delete" @if(!!$permission->delete) checked @endif>
+                                                    <label data-id="{{$permission->id}}" data-permission="delete" class="custom-control-label" for="{{$permission->id}}delete"></label>
                                                 </div>
                                             </td>
-                                            <td class="d-none d-sm-table-cell">
-                                                <div class="custom-control custom-switch mb-1">
-                                                    <input type="checkbox" class="custom-control-input" id="example-sw-custom1" name="example-sw-custom1" checked>
+                                            <td class=" text-center d-none d-sm-table-cell">
+                                                <div class="custom-control custom-control-lg custom-switch mb-1">
+                                                    <input type="checkbox" class="custom-control-input" id="{{$permission->id}}move" @if(!!$permission->move) checked @endif>
+                                                    <label data-id="{{$permission->id}}" data-permission="move" class="custom-control-label" for="{{$permission->id}}move"></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -189,6 +193,47 @@
             </div>
         </div>
     </div>
+    
+    <!-- Set toast template -->
+    <div style="position: fixed; top: 3rem; right: 3rem; z-index: 9999999;">
+        <!-- Toast Example 1 -->
+        <div id="toast_applied" class="toast fade hide" data-delay="4000" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header text-success">
+                <i class="far fa-thumbs-up mr-2"></i>
+                <strong class="mr-auto">Success</strong>
+                <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Your channge applied successfully !
+            </div>
+        </div>
+        <!-- END Toast Example 1 -->
+
+        <!-- Toast Example 2 -->
+        <div id="toast_not_applied" class="toast fade hide" data-delay="4000" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header text-warning">
+                <i class="far fa-thumbs-down mr-2"></i>
+                <strong class="mr-auto">Failed</strong>
+                <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Your change not applied for some reason !
+            </div>
+        </div>
+        <!-- END Toast Example 2 -->
+    </div>
+    <!-- End toast template -->
+
     <!-- END Page Content -->
 
+@endsection
+
+@section('script')
+    @parent
+
+    <script src="/assets/manual/js/permission_manage.js"></script>
 @endsection

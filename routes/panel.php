@@ -20,6 +20,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     
     Route::get('/permission', 'AdminController@permissionManage')->name('permission');
 
+    Route::patch('/permission', 'AdminController@modifyPermission');
+
     Route::get('/file', 'AdminController@fileManage')->name('file');
 
 });

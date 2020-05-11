@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Session;
+
 use App\Models\ActModels\UserModel;
 
 class FileManageController extends Controller
@@ -189,10 +191,11 @@ class FileManageController extends Controller
             $fileInfos[$index]['name'] = basename($files[$index]);
             $fileInfos[$index]['fullpath'] = $files[$index];
         }
-
+        
         return [
             'folders' => isset($folderInfos) ? $folderInfos : [],
-            'files' => isset($fileInfos) ? $fileInfos : []
+            'files' => isset($fileInfos) ? $fileInfos : [],
+            'permissions' => session('permissions'),
         ];
     }
 

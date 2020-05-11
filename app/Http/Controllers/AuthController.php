@@ -43,9 +43,15 @@ class AuthController extends Controller
                 session([ 
                     'user_id' => $authResult['data']['user_id'], 
                     'role' => $authResult['data']['role'],
-                    'folder' => $authResult['data']['folder']
+                    'folder' => $authResult['data']['folder'] ,
+                    'permissions' => [
+                        'create_folder'  => $authResult['data']['create_folder'],
+                        'rename' => $authResult['data']['rename'],
+                        'delete' => $authResult['data']['delete'],
+                        'move' => $authResult['data']['move']
+                    ]
                 ]);
-                
+
                 return redirect()->action('HomeController');
 
             } else if($authResult['result'] == 'failed') {

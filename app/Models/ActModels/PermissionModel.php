@@ -14,4 +14,12 @@ class PermissionModel extends Model
 
         return $permissons;
     }
+
+    public function modify($data)
+    {
+        // change targeted permission
+        $affected = Permission::where('id', $data['id'])->update([$data['permission'] => $data['value']]);
+        
+        return $affected > 0 ? true : false;
+    }
 }

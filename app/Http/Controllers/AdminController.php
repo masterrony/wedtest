@@ -39,8 +39,20 @@ class AdminController extends Controller
         // return view with file, folder data
         return view('panel.admin.file', [
             'admin_folder' => $adminFolder,
+            'permissions' => $data['permissions'],
             'folders' => $data['folders'],
             'files' => $data['files']
         ]);
+    }
+
+    public function modifyPermission(Request $request)
+    {
+        $data['id'] = $request->id;
+        $data['permission'] = $request->permission;
+        $data['value'] = $request->value;
+
+        $result = $this->permissionModel->modify($data);
+
+        return response()->json(['result' => $result], 200);
     }
 }

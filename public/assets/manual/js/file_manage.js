@@ -4,6 +4,7 @@
 $(document).ready(function() {
 
     var cutCand = null // varriable for store file path will be moved
+    var currentPath = rootPath // set current path to be root at first
 
     // set ajax request header with csrf token
     $.ajaxSetup({
@@ -38,7 +39,7 @@ $(document).ready(function() {
             type:'GET',
             url: `/file/open-folder?path=${currentPath}`,
             success: function(data) {
-                return renderContent(data)
+                return renderContent(data) 
             },
             error: function(error) {
                 alert('error occured')
@@ -49,7 +50,7 @@ $(document).ready(function() {
     // handler for move up
     $(document).on('click', 'button#btn_move_up', function() {
         // check if now is root
-        if(currentPath.lastIndexOf('/') < 0)
+        if(currentPath == rootPath)
             return alert('Now root folder')
 
         // set current path
@@ -206,7 +207,7 @@ $(document).ready(function() {
 
             var renameInput = $(this)
                 
-            $.ajax({
+            $.ajax({ 
                 type: 'PATCH',
                 url: '/file/rename',
                 data: {
@@ -316,21 +317,24 @@ var renderContent = function(data) {
                                 </button>
                             </div>
                             <div class="btn-group mb-3">
-                                <button class="btn btn-sm btn-light btn-cut">
+                                ${!!data.permissions['move'] ?
+                                    `<button class="btn btn-sm btn-light btn-cut">
                                     <i class="fa fa-cut text-primary mr-1"></i>
-                                </button>
-                                <button class="btn btn-sm btn-light btn-paste">
-                                    <i class="fa fa-paste mr-1"></i>
-                                </button>
-                                <button class="btn btn-sm btn-light btn-delete-folder" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this folder?">
-                                    <i class="fa fa-trash text-danger mr-1"></i>
-                                </button>
+                                    </button>
+                                    <button class="btn btn-sm btn-light btn-paste">
+                                        <i class="fa fa-paste mr-1"></i>
+                                    </button>` : '' }
+                                ${!!data.permissions['delete'] ?
+                                    `<button class="btn btn-sm btn-light btn-delete-folder" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this folder?">
+                                        <i class="fa fa-trash text-danger mr-1"></i>
+                                    </button>` : '' }
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type="text" value = "${data.folders[i]['name']}" data-type="folder" class="form-control inpt-rename" placeholder="type name...">
-                                </div>
-                            </div>
+                            ${!!data.permissions['rename'] ?
+                                `<div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" value = "${data.folders[i]['name']}" data-type="folder" class="form-control inpt-rename" placeholder="type name...">
+                                    </div>
+                                </div>` : '' }
                         </div>
                     </div>
                 </div>
@@ -366,21 +370,24 @@ var renderContent = function(data) {
                                 </a>
                             </div>
                             <div class="btn-group mb-3">
-                                <button class="btn btn-sm btn-light btn-cut">
-                                    <i class="fa fa-cut text-primary mr-1"></i>
-                                </button>
+                                ${!!data.permissions['move'] ?
+                                    `<button class="btn btn-sm btn-light btn-cut">
+                                        <i class="fa fa-cut text-primary mr-1"></i>
+                                    </button>` : ''}
                                 <a class="btn btn-sm btn-light" href="/file/download?path=${data.files[i]['fullpath']}">
                                     <i class="fa fa-download text-black mr-1"></i>
                                 </a>
-                                <button class="btn btn-sm btn-light btn-delete-file" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this photo ?">
-                                    <i class="fa fa-trash text-danger mr-1"></i>
-                                </button>
+                                ${!!data.permissions['delete'] ?
+                                    `<button class="btn btn-sm btn-light btn-delete-file" data-toggle="tooltip" data-animation="true" data-placement="bottom" title="Really delete this photo ?">
+                                        <i class="fa fa-trash text-danger mr-1"></i>
+                                    </button>` : ''}
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type="text" value = "${data.files[i]['name']}" class="form-control inpt-rename" placeholder="type name...">
-                                </div>
-                            </div>
+                            ${!!data.permissions['rename'] ? 
+                                `<div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" value = "${data.files[i]['name']}" class="form-control inpt-rename" placeholder="type name...">
+                                    </div>
+                                </div>` : '' }
                         </div>
                     </div>
                 </div>
