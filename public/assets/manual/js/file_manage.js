@@ -1,6 +1,6 @@
 
 // !!! I LOVE JAVASCRIPT AND AJAX !!!
-
+ 
 $(document).ready(function() {
 
     var cutCand = null // varriable for store file path will be moved
@@ -119,10 +119,12 @@ $(document).ready(function() {
             processData: false,
             enctype: 'multipart/form-data',
             success: function(data){
-                if(!!data.result) 
+                if(!!data.result) {
                     renderContent(data.data)
+                    showToast(1, 'Uploaded Successfully')
+                }
                 else
-                    alert(data.message)
+                    showToast(0, data.message)
 
                 // clear file button, input
                 $(btnUploadFile).prop('disabled', true)
@@ -132,7 +134,7 @@ $(document).ready(function() {
                 $('input#inpt_new_file').val('')
             },
             error: function(error) {
-                alert('Error Occured !')
+                showToast(0, 'Error Occured !')
             }
         });
     })
@@ -153,12 +155,13 @@ $(document).ready(function() {
                 if(!!data.result) {
                     $('div.tooltip').remove()
                     renderContent(data.data)
+                    showToast(1, 'Removed Successfully !')
                 }
                 else    
-                    alert(data.message)
+                    showToast(0, data.message)
             },
             error: function(error) {
-                alert('Error occured !')
+                showToast(0, 'Error Occured')
             }
         })
     })
@@ -179,12 +182,13 @@ $(document).ready(function() {
                 if(!!data.result) {
                     $('div.tooltip').remove()
                     renderContent(data.data)
+                    showToast(1, 'Removed Successfully !')
                 }
                 else    
-                    alert(data.message)
+                    showToast(0, data.message)
             },
             error: function(error) {
-                alert('Error occured !')
+                showToast(0, 'Error occured !')
             }
         })
     })
@@ -217,9 +221,10 @@ $(document).ready(function() {
                 success: function(data) {
                     if(!!data.result) {
                         $(renameInput).parents('div.top-container').find('p.font-w600').text($(renameInput).val())
+                        showToast(1, 'Renamed !')
                     }
                     else
-                        alert(data.message)
+                        showToast(0, data.message)
                 },
                 error: function(error) {
                     alert('Error Occured !')
@@ -245,7 +250,7 @@ $(document).ready(function() {
     $(document).on('click', 'button.btn-paste', function() {
         // check if we have something to paset
         if(!cutCand)
-           return alert('Nothing to pasete.')
+           return showToast(0, 'Nothing to paste !')
         
         $.ajax({
             type: 'PATCH',
@@ -263,14 +268,14 @@ $(document).ready(function() {
                     
                     cutCand = null
 
-                    alert('Moved Successfully !')
+                    showToast(1, 'Moved Successfully !')
                     return renderContent(data.data)
                 } else {
-                    return alert(data.message)
+                    showToast(0, data.message)
                 }
             },
             error: function(error) {
-                return alert('Error Occured !')
+                showToast(0, 'Error Occured !')
             }
         })
     })

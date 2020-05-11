@@ -25,9 +25,10 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     if(!!data.result) 
-                        $('#toast_applied').toast('show');
+                        showToast(1, 'Applied successfully')
                     else 
-                        $('#toast_fnot_applied').toast('show');
+                        showToast(0, 'Not applied for some reason')
+
                     applying = false;
                 },
                 error: function() {

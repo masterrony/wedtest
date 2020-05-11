@@ -193,40 +193,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Set toast template -->
-    <div style="position: fixed; top: 3rem; right: 3rem; z-index: 9999999;">
-        <!-- Toast Example 1 -->
-        <div id="toast_applied" class="toast fade hide" data-delay="4000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header text-success">
-                <i class="far fa-thumbs-up mr-2"></i>
-                <strong class="mr-auto">Success</strong>
-                <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                Your channge applied successfully !
-            </div>
-        </div>
-        <!-- END Toast Example 1 -->
-
-        <!-- Toast Example 2 -->
-        <div id="toast_not_applied" class="toast fade hide" data-delay="4000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header text-warning">
-                <i class="far fa-thumbs-down mr-2"></i>
-                <strong class="mr-auto">Failed</strong>
-                <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                Your change not applied for some reason !
-            </div>
-        </div>
-        <!-- END Toast Example 2 -->
-    </div>
-    <!-- End toast template -->
 
     <!-- END Page Content -->
 

@@ -107,6 +107,24 @@
             <!-- END Footer -->
         </div>
 
+         <!-- Set toast template -->
+        <div style="position: fixed; top: 5rem; right: 3rem; z-index: 9999999;">
+            <!-- Toast Example 1 -->
+            <div id="div_toast" class="toast fade hide" data-delay="4000" role="alert" aria-live="assertive" aria-atomic="true">
+                <div id="div_toast_header" class="toast-header">
+                    <i class="far fa-thumbs-up mr-2"></i>
+                    <strong class="mr-auto"></strong>
+                    <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="div_toast_body" class="toast-body">
+                </div>
+            </div>
+            <!-- END Toast Example 1 -->
+        </div>
+        <!-- End toast template -->
+
         <!-- define script section -->
         @section('script')
           <!-- incldue core javascript libraries -->
@@ -140,8 +158,23 @@
           <!-- Developer specific script -->
           <script>
             // set current path
-            var rootPath = @if(isset($admin_folder)) '{{$admin_folder}}'
-                              @elseif(isset($customer_folder)) '{{$customer_folder}}' @endif
+            var rootPath = ''
+            @if(isset($admin_folder)) rootPath =  '{{$admin_folder}}'
+            @elseif(isset($customer_folder)) rootPath = '{{$customer_folder}}' @endif
+
+            var showToast = function(result, message) {
+                if(!!result) {
+                    $('div#div_toast div#div_toast_header').addClass('text-success')
+                    $('div#div_toast div#div_toast_header strong').text('Success')
+                } else {
+                    $('div#div_toast div#div_toast_header').addClass('text-warning')
+                    $('div#div_toast div#div_toast_header strong').text('Failed')
+                }
+
+                $('div#div_toast div#div_toast_body').text(message)
+
+                $('div#div_toast').toast('show')
+            }
 
             $.getScript('/assets/manual/js/file_manage.js')
           </script>
