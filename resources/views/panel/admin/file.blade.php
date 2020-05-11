@@ -53,15 +53,15 @@
         <div class="content-side content-side-full">
             <ul class="nav-main">
                 <li class="nav-main-item">
-                    <a class="nav-main-link active" href="{{route('panel.admin.permission')}}">
-                        <i class="nav-main-link-icon si si-cursor"></i>
-                        <span class="nav-main-link-name">Permission</span>
-                    </a>
-                </li>
-                <li class="nav-main-item">
                     <a class="nav-main-link active" href="{{route('panel.admin.file')}}">
                         <i class="nav-main-link-icon far fa-file-alt"></i>
                         <span class="nav-main-link-name">File</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link active" href="{{route('panel.admin.permission')}}">
+                        <i class="nav-main-link-icon si si-cursor"></i>
+                        <span class="nav-main-link-name">Permission</span>
                     </a>
                 </li>
             </ul>
@@ -97,6 +97,11 @@
         <!-- Right Section -->
         <div>
             <!-- User Dropdown -->
+            <div class="dropdown d-inline-block">
+                <a type="button" class="btn btn-dual" href="{{route('home')}}">
+                    <i class="fa fa-fw fa-home ml-1"></i> Go to Home
+                </a>
+            </div>
             <div class="dropdown d-inline-block">
                 <a type="button" class="btn btn-dual" href="{{route('auth.sign_out')}}">
                     <i class="fa fa-fw fa-sign-out-alt ml-1"></i> Logout

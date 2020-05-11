@@ -98,6 +98,11 @@
         <div>
             <!-- User Dropdown -->
             <div class="dropdown d-inline-block">
+                <a type="button" class="btn btn-dual" href="{{route('home')}}">
+                    <i class="fa fa-fw fa-home ml-1"></i> Go to Home
+                </a>
+            </div>
+            <div class="dropdown d-inline-block">
                 <a type="button" class="btn btn-dual" href="{{route('auth.sign_out')}}">
                     <i class="fa fa-fw fa-sign-out-alt ml-1"></i> Logout
                 </a>
