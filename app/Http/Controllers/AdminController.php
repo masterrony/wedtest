@@ -14,12 +14,15 @@ use App\Models\ORMs\Permission;
 
 use App\Models\ActModels\PermissionModel;
 
+use App\Models\ActModels\UserModel;
+
 class AdminController extends Controller
 {
-    function __construct(FileManageController $fileManage, PermissionModel $permissionModel)
+    function __construct(FileManageController $fileManage, PermissionModel $permissionModel, UserModel $userModel)
     {
         $this->fileManage = $fileManage;
         $this->permissionModel = $permissionModel;
+        $this->userModel = $userModel;
     }
 
     public function permissionManage(Request $request) {
@@ -35,13 +38,17 @@ class AdminController extends Controller
         
         // get info of admin folder
         $data = $this->fileManage->getFolderInfo($adminFolder);
+
+        // get all users
+        $users = $this->userModel->getAll();
         
         // return view with file, folder data
         return view('panel.admin.file', [
             'admin_folder' => $adminFolder,
             'permissions' => $data['permissions'],
             'folders' => $data['folders'],
-            'files' => $data['files']
+            'files' => $data['files'],
+            'users' => $users
         ]);
     }
 

@@ -30,5 +30,8 @@ Route::patch('/rename', 'FileManageController@rename');
 // route for move file, folder
 Route::patch('/move', 'FileManageController@move');
 
+// route for assign file to user
+Route::patch('/assign', 'FileManageController@assign');
+
 // route for download
 Route::get('/download/', 'FileManageController@download')->name('download');

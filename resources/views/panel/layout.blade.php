@@ -83,8 +83,19 @@
                 <!-- END Hero -->
 
                 <!-- Page Content -->
-                <div class="content">
-                    @yield('content')
+                <div class="row no-gutters flex-md-10-auto mb-4">
+                    @if(!!isset($customer_folder))
+                        <div class="content">
+                            @yield('content')
+                        </div>
+                    @else
+                        @yield('user-info')
+                        <div class="col-md-10 col-lg-9 col-xl-10 order-md-0 bg-body-dark">
+                            <div class="content">
+                                @yield('content')
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <!-- END Page Content -->
 
@@ -164,9 +175,11 @@
 
             var showToast = function(result, message) {
                 if(!!result) {
+                    $('div#div_toast div#div_toast_header').removeClass('text-warning')
                     $('div#div_toast div#div_toast_header').addClass('text-success')
                     $('div#div_toast div#div_toast_header strong').text('Success')
                 } else {
+                    $('div#div_toast div#div_toast_header').removeClass('text-success')
                     $('div#div_toast div#div_toast_header').addClass('text-warning')
                     $('div#div_toast div#div_toast_header strong').text('Failed')
                 }
@@ -176,7 +189,7 @@
                 $('div#div_toast').toast('show')
             }
 
-            $.getScript('/assets/manual/js/file_manage.js')
+            $.getScript('/js/file_manage.js')
           </script>
         @show
     </body>

@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link active" href="{{route('panel.admin.permission')}}">
+                    <a class="nav-main-link" href="{{route('panel.admin.permission')}}">
                         <i class="nav-main-link-icon si si-cursor"></i>
                         <span class="nav-main-link-name">Permission</span>
                     </a>
@@ -126,10 +126,54 @@
 
 @endsection
 
+@section('user-info')
+
+    <div class="col-md-2 col-lg-3 col-xl-2 order-md-1" id="div_users_list">
+        <div class="content">
+            <!-- Toggle Storage Info -->
+            <div class="d-md-none push">
+                <!-- Class Toggle, functionality initialized in Helpers.coreToggleClass() -->
+                <button type="button" class="btn btn-block btn-hero-primary" data-toggle="class-toggle" data-target="#side-content" data-class="d-none">
+                    User Info
+                </button>
+            </div>
+            <!-- END Toggle Storage Info -->
+
+            <!-- User Info -->
+            <div id="side-content" class="d-none d-md-block push">
+                <h2 id="folder-heading" class="content-heading border-black-op">
+                    <i class="fa fa-fw fa-users mr-1"></i> Users ({{count($users) - 1}})
+                </h2>
+
+                @foreach($users as $user)
+                    @if($user->role_id != 1)
+                        <div class="block block-rounded mb-2">
+                            <div class="block-content" data-folder = "{{$user->folder}}">
+                                <h4 class="text-muted mb-2">
+                                    <i class="far fa-fw fa-grin-alt mr-1"></i> {{$user->user_id}}
+                                </h4>
+
+                                <button type="button" class="btn btn-hero-lg btn-outline-primary mr-1 mb-3 btn-assign">
+                                    <i class="si si-pin mr-1"></i> Assign
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr>
+                    @endif
+                @endforeach
+
+            </div>
+            <!-- END User Status -->
+        </div>
+    </div>
+
+@endsection
+
 @section('content')
 
     <!-- Page Content -->
-    <div class="row no-gutters flex-md-12-auto">
+    <div class="row no-gutters flex-md-12-auto mb-4">
         <div class="col-md-12 col-lg-12 col-xl-12 order-md-0 bg-body-dark">
             <div class="content">
 
@@ -237,6 +281,9 @@
                                                     <i class="fa fa-cut text-primary mr-1"></i>
                                                 </button>
                                             @endif
+                                            <button class="btn btn-sm btn-light btn-cut">
+                                                <i class="far fa-clipboard text-primary mr-1"></i>
+                                            </button>
                                             <a class="btn btn-sm btn-light" href="/file/download?path={{$file['fullpath']}}">
                                                 <i class="fa fa-download text-black mr-1"></i>
                                             </a>

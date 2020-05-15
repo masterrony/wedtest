@@ -167,6 +167,35 @@ class FileManageController extends Controller
         return response()->json(['result' => true, 'data' => $data ], 200);
     }
 
+    public function assign(Request $request)
+    {
+        $source = $request->source;
+        $dest = $request->dest;
+
+        // check if source exists
+        $exists = Storage::disk('local')->exists($source);
+        if(!$exists)
+            return response()->json(['result' => false, 'message' => 'Source does not exists']);
+
+        // check if dest exists
+        $realDest = config('storage.customer') . '/' . $dest; // join customers folder name with customer folder name so that get real path
+        $exists = Storage::disk('local')->exists($realDest);
+        if(!$exists)
+            return response()->json(['result' => false, 'message' => 'Destination directory does not exists']);
+
+        // make complete dest
+        $realDest = $realDest . '/' . basename($source);
+        
+        // let check if same file exists
+        $exists = Storage::disk('local')->exists($realDest);
+        if(!!$exists)
+            return response()->json(['result' => false, 'message' => 'That file already assigned']);
+
+        Storage::copy($source, $realDest, true);
+
+        return response()->json(['result' => true, 'mesasge' => 'Assigned Successfully' ], 200);
+    }
+
     public function download(Request $request)
     {
         return Storage::download($request->query('path'));

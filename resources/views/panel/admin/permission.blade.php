@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link active" href="{{route('panel.admin.file')}}">
+                    <a class="nav-main-link" href="{{route('panel.admin.file')}}">
                         <i class="nav-main-link-icon far fa-file-alt"></i>
                         <span class="nav-main-link-name">File</span>
                     </a>
@@ -206,5 +206,5 @@
 @section('script')
     @parent
 
-    <script src="/assets/manual/js/permission_manage.js"></script>
+    <script src="/js/permission_manage.js"></script>
 @endsection

@@ -8,6 +8,13 @@ use App\Models\ORMs\User;
 
 class UserModel extends Model
 {
+    public function getAll()
+    {
+        $users = User::all();
+
+        return $users;
+    }
+
     public function authUser($userId) {
       // take user with permission
       $user = User::join('permissions', 'users.role_id', '=', 'permissions.id')

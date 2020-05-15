@@ -25,7 +25,7 @@ $(document).ready(function() {
                 return renderContent(data)
             },
             error: function(error) {
-                alert('Error occured !')
+                showToast(0, 'Error occured !')
             }
         })
     })
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 return renderContent(data) 
             },
             error: function(error) {
-                alert('error occured')
+                showToast(0, 'Error Occured !')
             }
         })
     })
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 return renderContent(data)
             },
             error: function(error) {
-                alert('Error occured !')
+                return showToast(0, 'Error occured !')
             }
         })
     })
@@ -87,7 +87,7 @@ $(document).ready(function() {
             if(validMime.indexOf(mimeType.toLowerCase()) < 0) {
                 $(btnUploadFile).prop('disabled', true)
                 $(btnUploadFile).html('<i class="fa fa-file-upload mr-1"></i>')
-                return alert('Please choose image file')
+                return showToast(0, 'Please choose image file')
             }
 
             // set file name amd disable choose
@@ -142,7 +142,7 @@ $(document).ready(function() {
     // handler for delete file
     $(document).on('click', 'button.btn-delete-file', function() {    
         var topContainer = $(this).parents("div.top-container")
-        console.log(currentPath)
+
         $.ajax({
             type: 'DELETE',
             url: '/file/delete',
@@ -206,28 +206,30 @@ $(document).ready(function() {
             if($(this).val().substr($(this).val().lastIndexOf('.') + 1) !== 
                 $(this).parents('div.top-container').find('p.font-w600').text().trim().substr($(this).parents('div.top-container').find('p.font-w600').text().trim().lastIndexOf('.') + 1)) {
                 if(!$(this).attr('data-type'))
-                    return alert('Sorry can not changed the file extension')
+                    return showToast(0, 'Sorry can not changed the file extension')
             }
 
             var renameInput = $(this)
+            var pathDiv =  $(renameInput).parent().parent().parent();
                 
             $.ajax({ 
                 type: 'PATCH',
                 url: '/file/rename',
                 data: {
-                    original: $(renameInput).parent().parent().parent().attr('data-path'),
+                    original: $(pathDiv).attr('data-path'),
                     modify: $(renameInput).val() 
                 },
                 success: function(data) {
                     if(!!data.result) {
                         $(renameInput).parents('div.top-container').find('p.font-w600').text($(renameInput).val())
-                        showToast(1, 'Renamed !')
+                        $(pathDiv).attr('data-path', `${$(pathDiv).attr('data-path').slice(0, $(pathDiv).attr('data-path').lastIndexOf('/'))}/${$(renameInput).val()}`)
+                        showToast(1, 'Renamed Successfully !')
                     }
                     else
                         showToast(0, data.message)
                 },
                 error: function(error) {
-                    alert('Error Occured !')
+                    showToast(0, 'Error Occured !')
                 }
             })
         }
@@ -248,7 +250,7 @@ $(document).ready(function() {
 
     // handler for paste file
     $(document).on('click', 'button.btn-paste', function() {
-        // check if we have something to paset
+        // check if we have something to paste
         if(!cutCand)
            return showToast(0, 'Nothing to paste !')
         
@@ -261,18 +263,48 @@ $(document).ready(function() {
                 currentPath: currentPath
             },
             success: function(data) {
-                if(!!data.result) {
-                    // if current folder is source then remove source content
-                    if(!!$(`div[data-path='${cutCand}']`))
-                        $(`div[data-path='${cutCand}']`).parents('div.top-container').remove()
-                    
-                    cutCand = null
+                if(!data.result)
+                    return showToast(0, data.message)
 
-                    showToast(1, 'Moved Successfully !')
-                    return renderContent(data.data)
-                } else {
-                    showToast(0, data.message)
-                }
+                // if current folder is source then remove source content
+                if(!!$(`div[data-path='${cutCand}']`))
+                    $(`div[data-path='${cutCand}']`).parents('div.top-container').remove()
+                
+                cutCand = null
+
+                showToast(1, 'Moved Successfully !')
+                return renderContent(data.data)
+            },
+            error: function(error) {
+                showToast(0, 'Error Occured !')
+            }
+        })
+    })
+
+    // handler for assign file to user
+    $(document).on('click', 'button.btn-assign', function() {
+        // check if we have something to assign
+        if(!cutCand)
+           return showToast(0, 'Nothing to assign !')
+
+        // get all content containers and make them fully visible
+        var contentContainer = $('div.content-container')
+        for (let i = 0; i < contentContainer.length; i++) 
+            $(contentContainer[i]).css({'opacity': '1'})
+        
+        $.ajax({
+            type: 'PATCH',
+            url: '/file/assign',
+            data: {
+                source: cutCand,
+                dest: $(this).parent().attr('data-folder')
+            },
+            success: function(data) {
+                if(!data.result) 
+                    return showToast(0, data.message)
+
+                cutCand = null
+                return showToast(1, 'Assigned Successfully !')
             },
             error: function(error) {
                 showToast(0, 'Error Occured !')
@@ -378,6 +410,10 @@ var renderContent = function(data) {
                                 ${!!data.permissions['move'] ?
                                     `<button class="btn btn-sm btn-light btn-cut">
                                         <i class="fa fa-cut text-primary mr-1"></i>
+                                    </button>` : ''}
+                                ${!!$('div#div_users_list').length ?
+                                    `<button class="btn btn-sm btn-light btn-cut">
+                                        <i class="far fa-clipboard text-primary mr-1"></i>
                                     </button>` : ''}
                                 <a class="btn btn-sm btn-light" href="/file/download?path=${data.files[i]['fullpath']}">
                                     <i class="fa fa-download text-black mr-1"></i>
